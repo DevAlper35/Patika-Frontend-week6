@@ -1,46 +1,56 @@
-let tasks = []
+let liste = document.getElementById("list")
+// Yeni bir görev ekleme methodu
+let i = 1;
+function yeniGorev(){
 
-// Yeni bir öğe ekleme fonksiyonu
-function newElement() 
-{
     // Yeni bir öğe için bir li elementi oluştur
     let li = document.createElement("li");
+
     // Giriş kutusundaki değeri al
-    let input = document.getElementById("task").value;
+    let girilen = document.getElementById("task").value;
+
     // Giriş kutusunun boş olup olmadığını kontrol et
-    if (input === "") 
+    if (girilen === "") 
     {
       // Boşsa, hata bildirimi göster
       $(".error").toast("show");
     } 
+    
     else 
     {
       // Değilse, li elementine giriş değerini ekle
-      li.textContent = input;
+      li.textContent = girilen;
+      li.id= `gorev${i}`
+      i = i + 1
       // Li elementine bir span elementi ekle
-      let span = document.createElement("span");
+      span = document.createElement("span");
+
       // Span elementine "close" sınıfı ve "x" metni ver
       span.className = "close";
       span.textContent = "x";
+
       // Li elementine span elementini ekle
       li.appendChild(span);
+
       // Listeye li elementini ekle
-      list.appendChild(li);
+      liste.appendChild(li);
+
       // Başarı bildirimi göster
       $(".success").toast("show");
+
       // Giriş kutusunu temizle
       document.getElementById("task").value = "";
-      // Yapılacaklar listesine yeni öğeyi ekle
-      tasks.push(input);
-      // Yapılacaklar listesini stringe dönüştür
-      let tasksString = JSON.stringify(tasks);
-      // Yapılacaklar listesini localStorage'a kaydet
-      localStorage.setItem("tasks", tasksString);
+      
     }
-  }
-  
-  // Listeye tıklandığında, tıklanan öğeyi seç 
-  list.addEventListener("click", function(task) 
+}
+
+let ekleBtn = document.querySelector("#liveToastBtn");
+
+ekleBtn.addEventListener("click",(event) =>{
+    yeniGorev()
+})
+
+liste.addEventListener("click", function(task)
   {
     if (task.target.tagName === "LI") 
     {
@@ -48,55 +58,16 @@ function newElement()
     }
   });
 
-  list.onclick = function(event) 
-  {
-    // Tıklanan öğeyi seç
-    let target = event.target;
-    // Tıklanan öğenin bir span elementi olup olmadığını kontrol et
-    if (target.tagName === "SPAN") 
-    {
-        // Span elementinin üst öğesini, yani li elementini seç
-        let li = target.parentNode;
-        // Tıklanan öğe işaretlenmiş mi diye kontrol et
-        if (li.classList.contains("checked")) 
-        {
-            // İşaretlenmişse, listedeki li elementinin indeksini bul
-            let index = Array.from(list.children).indexOf(li);
-            // Listedeki li elementini sil
-            list.removeChild(li);
-            // Yapılacaklar listesinden silinen öğeyi çıkar
-            tasks.splice(index, 1);
-            // Yapılacaklar listesini stringe dönüştür
-            let tasksString = JSON.stringify(tasks);
-            // Yapılacaklar listesini localStorage'a kaydet
-            localStorage.setItem("tasks", tasksString);
-        } 
-        else
-        {
-            // İşaretlenmemişse, span elementine checked sınıfını ekle
-            li.classList.add("checked");
-        }
-    }
-};
+
 
   
-  
-// Sayfa yüklendiğinde, localStorage'dan verileri al
-window.onload = function() 
-{            
-    let storedTasks = localStorage.getItem("tasks");
-    if (storedTasks) 
-    {
-      tasks = JSON.parse(storedTasks);
-      tasks.forEach(function(task) 
-      {
-        let li = document.createElement("li");
-        li.textContent = task;
-        let span = document.createElement("span");
-        span.className = "close";
-        span.textContent = "x";
-        li.appendChild(span);
-        list.appendChild(li);
-      });
-    }
-  };
+closeDOM = document.querySelector(`#gorev${i}`)
+
+closeDOM.addEventListener("click",(event) =>
+{
+    
+    console.log(`Silindi `,`gorev${i}`)
+    /*let target = event.target;
+    console.log(target)
+    target.parentElement.remove();*/
+})
