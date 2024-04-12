@@ -20,7 +20,7 @@ function yeniGorev(){
     {
       // Değilse, li elementine giriş değerini ekle
       li.textContent = girilen;
-      li.id= `gorev${i}`
+      li.className= "gorev"
       i = i + 1
       // Li elementine bir span elementi ekle
       span = document.createElement("span");
@@ -61,13 +61,18 @@ liste.addEventListener("click", function(task)
 
 
   
-closeDOM = document.querySelector(`#gorev${i}`)
 
-closeDOM.addEventListener("click",(event) =>
-{
-    
-    console.log(`Silindi `,`gorev${i}`)
-    /*let target = event.target;
-    console.log(target)
-    target.parentElement.remove();*/
-})
+
+document.querySelector("#list").addEventListener("click", gorevDel);
+
+
+function gorevDel(event){
+    var tagname = event.target.tagName
+    if(event.target.tagName == "SPAN"){
+      event.target.parentElement.remove();
+      console.log("Silindi Tagname ",tagname)
+    }
+    else{
+      console.log("Tagname ", tagname)
+    }
+}
